@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/plugins/eqcatalogue" >
-        <file>icon.png</file>
+        <file>../icon.png</file>
     </qresource>
 </RCC>

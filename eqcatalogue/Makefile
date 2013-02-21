@@ -23,23 +23,25 @@ PLUGIN_UPLOAD = $(CURDIR)/plugin_upload.py
 # Makefile for a PyQGIS plugin 
 
 # translation
-SOURCES = eqcatalogue.py ui_eqcatalogue.py __init__.py eqcataloguedialog.py
+# SOURCES = eqcatalogue.py ui_eqcatalogue.py __init__.py eqcataloguedialog.py
 #TRANSLATIONS = i18n/eqcatalogue_en.ts
-TRANSLATIONS = 
+ TRANSLATIONS = 
 
 # global
 
 PLUGINNAME = eqcatalogue
 
-PY_FILES = eqcatalogue.py eqcataloguedialog.py __init__.py
+PY_MODULES = eqcatalogue eqcatalogue_qgis
+
+FILES = __init__.py metadata.txt
 
 EXTRAS = icon.png 
 
-UI_FILES = ui_eqcatalogue.py
+UI_FILES = eqcatalogue_qgis/ui_eqcatalogue.py
 
-RESOURCE_FILES = resources_rc.py
+RESOURCE_FILES = eqcatalogue_qgis/resources_rc.py
 
-HELP = help/build/html
+HELP = docs/build/html
 
 default: compile
 
@@ -59,12 +61,13 @@ compile: $(UI_FILES) $(RESOURCE_FILES)
 # $HOME/.qgis/python/plugins
 deploy: compile doc transcompile
 	mkdir -p $(HOME)/.qgis/python/plugins/$(PLUGINNAME)
-	cp -vf $(PY_FILES) $(HOME)/.qgis/python/plugins/$(PLUGINNAME)
-	cp -vf $(UI_FILES) $(HOME)/.qgis/python/plugins/$(PLUGINNAME)
-	cp -vf $(RESOURCE_FILES) $(HOME)/.qgis/python/plugins/$(PLUGINNAME)
+	cp -vfr $(PY_MODULES) $(HOME)/.qgis/python/plugins/$(PLUGINNAME)
+	cp -vf $(FILES) $(HOME)/.qgis/python/plugins/$(PLUGINNAME)
+	# cp -vf $(UI_FILES) $(HOME)/.qgis/python/plugins/$(PLUGINNAME)
+	# cp -vf $(RESOURCE_FILES) $(HOME)/.qgis/python/plugins/$(PLUGINNAME)
 	cp -vf $(EXTRAS) $(HOME)/.qgis/python/plugins/$(PLUGINNAME)
-	cp -vfr i18n $(HOME)/.qgis/python/plugins/$(PLUGINNAME)
-	cp -vfr $(HELP) $(HOME)/.qgis/python/plugins/$(PLUGINNAME)/help
+	# cp -vfr i18n $(HOME)/.qgis/python/plugins/$(PLUGINNAME)
+	cp -vfr $(HELP) $(HOME)/.qgis/python/plugins/$(PLUGINNAME)/docs
 
 # The dclean target removes compiled python files from plugin directory
 # also delets any .svn entry
@@ -114,4 +117,4 @@ clean:
 
 # build documentation with sphinx
 doc: 
-	cd help; make html
+	cd docs; make html

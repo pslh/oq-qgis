@@ -56,5 +56,5 @@ def email():
 
 def classFactory(iface):
     # load EqCatalogue class from file EqCatalogue
-    from eqcatalogue import EqCatalogue
+    from eqcatalogue_qgis.eqcatalogue import EqCatalogue
     return EqCatalogue(iface)
