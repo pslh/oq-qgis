@@ -22,11 +22,9 @@
 
 from PyQt4 import QtCore, QtGui
 from ui_gemplotter import Ui_GEMPlotter
-from collections import defaultdict
-from matplotlib import pyplot as plt
 from openquake.nrmllib.risk.parsers import \
     FragilityModelParser, VulnerabilityModelParser
-from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 
 
@@ -38,25 +36,39 @@ class GEMPlotterDialog(QtGui.QDialog):
         self.ui.setupUi(self)
         self.modelfile = None
 
+        self.fig = Figure()
+        self.axes = self.fig.add_subplot(111)
+        self.axes.grid(True)
+        self.canvas = FigureCanvasQTAgg(self.fig)
+        self.canvas.setParent(self)
+        self.ui.plotLayout.addWidget(self.canvas)
+
     @QtCore.pyqtSlot()
     def on_cancelButton_clicked(self):
         self.close()
 
+    @QtCore.pyqtSlot()
+    def on_saveButton_clicked(self):
+        choices = 'PNG (*.png)|*.png'
+        path = unicode(QtGui.QFileDialog.getSaveFileName(
+            self, 'Save plot', '', choices))
+        self.canvas.print_figure(path)
+
     @QtCore.pyqtSlot(int)
     def plot_ff(self, taxonomy_idx):
-        #fig = FigureCanvas(Figure())
-        #fig.setParent(self.ui.widget)
         if not taxonomy_idx:
             return
+        self.axes.clear()
         taxonomy = str(self.ui.taxonomyCombo.itemText(taxonomy_idx))
         for state, y in zip(self.states, self.ff[taxonomy]):
-            plt.plot(self.iml['imls'], y, label=state)
-        plt.legend(loc='upper left')
-        plt.show()
+            self.axes.plot(self.iml['imls'], y, label=state)
+        self.axes.legend(loc='upper left')
+        self.canvas.draw()
+        self.ui.printButton.setEnabled(True)
 
     @QtCore.pyqtSlot()
     def on_chooseButton_clicked(self):
-        self.modelfile = str(QtGui.QFileDialog.getOpenFileName(
+        self.modelfile = unicode(QtGui.QFileDialog.getOpenFileName(
             self, 'Select Fragility Model file',
             QtCore.QDir.homePath(),
             'Model files (*.xml)'))
@@ -67,5 +79,5 @@ class GEMPlotterDialog(QtGui.QDialog):
         p = iter(FragilityModelParser(self.modelfile))
         kind, self.iml, self.states = next(p)
         self.ff = dict((taxonomy, y) for taxonomy, y, no_damage_limit in p)
-        self.ui.taxonomyCombo.addItems(['---'] + self.ff.keys())
+        self.ui.taxonomyCombo.addItems(self.ff.keys())
         self.ui.taxonomyCombo.setEnabled(True)
