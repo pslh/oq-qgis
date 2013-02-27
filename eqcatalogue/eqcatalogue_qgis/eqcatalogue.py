@@ -81,4 +81,4 @@ class EqCatalogue:
     # run method that performs all the real work
     def run(self):
         # show the dialog
-        self.dock.show()
+        self.dock.setVisibile(True)
