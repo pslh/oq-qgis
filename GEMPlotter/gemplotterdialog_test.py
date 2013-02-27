@@ -21,7 +21,7 @@ class GEMPlotterTestCase(unittest.TestCase):
     def test_damage_states(self):
         combo = self.dialog.ui.taxonomyCombo
         items = map(combo.itemText, range(combo.count()))
-        self.assertEqual(['RC/DMRF-D/LR', 'RC/DMRF-D/HR'], items)
+        self.assertEqual(['Taxonomy', 'RC/DMRF-D/LR', 'RC/DMRF-D/HR'], items)
         self.assertTrue(combo.isEnabled())
 
     def test2(self):

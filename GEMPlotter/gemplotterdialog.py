@@ -64,7 +64,7 @@ class GEMPlotterDialog(QtGui.QDialog):
             self.axes.plot(self.iml['imls'], y, label=state)
         self.axes.legend(loc='upper left')
         self.canvas.draw()
-        self.ui.printButton.setEnabled(True)
+        self.ui.saveButton.setEnabled(True)
 
     @QtCore.pyqtSlot()
     def on_chooseButton_clicked(self):
