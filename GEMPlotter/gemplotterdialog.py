@@ -24,8 +24,13 @@ from PyQt4 import QtCore, QtGui
 from ui_gemplotter import Ui_GEMPlotter
 from openquake.nrmllib.risk.parsers import \
     FragilityModelParser, VulnerabilityModelParser
-from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg
-from matplotlib.figure import Figure
+try:
+    from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg
+    from matplotlib.figure import Figure
+except ImportError:
+    raise ImportError(
+        'In order to use the GEMPlotter you need to install '
+        'Matplotlib (http://matplotlib.org) and then reload the plugin')
 
 
 class GEMPlotterDialog(QtGui.QDialog):
