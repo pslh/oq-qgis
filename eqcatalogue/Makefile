@@ -37,7 +37,7 @@ FILES = __init__.py metadata.txt
 
 EXTRAS = icon.png 
 
-UI_FILES = eqcatalogue_qgis/ui_eqcatalogue.py
+UI_FILES = eqcatalogue_qgis/catalogue_events.py
 
 RESOURCE_FILES = eqcatalogue_qgis/resources_rc.py
 

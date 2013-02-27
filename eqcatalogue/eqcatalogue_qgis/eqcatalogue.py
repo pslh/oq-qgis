@@ -32,7 +32,7 @@ from qgis.core import *
 # Initialize Qt resources from file resources.py
 import resources_rc
 # Import the code for the dialog
-from eqcataloguedialog import EqCatalogueDialog
+from dock import GemDock
 
 
 class EqCatalogue:
@@ -57,7 +57,7 @@ class EqCatalogue:
                 QCoreApplication.installTranslator(self.translator)
 
         # Create the dialog (after translation) and keep reference
-        self.dlg = EqCatalogueDialog()
+        self.dock = GemDock(self.iface)
 
     def initGui(self):
         # Create action that will start plugin configuration
@@ -71,6 +71,8 @@ class EqCatalogue:
         self.iface.addToolBarIcon(self.action)
         self.iface.addPluginToMenu(u"&eqcatalogue", self.action)
 
+        self.iface.addDockWidget(Qt.RightDockWidgetArea, self.dock)
+
     def unload(self):
         # Remove the plugin menu item and icon
         self.iface.removePluginMenu(u"&eqcatalogue", self.action)
@@ -79,11 +81,4 @@ class EqCatalogue:
     # run method that performs all the real work
     def run(self):
         # show the dialog
-        self.dlg.show()
-        # Run the dialog event loop
-        result = self.dlg.exec_()
-        # See if OK was pressed
-        if result == 1:
-            # do something useful (delete the line containing pass and
-            # substitute with your code)
-            pass
+        self.dock.show()
