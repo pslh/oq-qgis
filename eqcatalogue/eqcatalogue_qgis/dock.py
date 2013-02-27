@@ -10,6 +10,7 @@ from qgis.core import *
 from qgis.gui import *
 
 from catalogue_events import Ui_CatalogueEvents
+from rangeFilter import DoubleRangeFilter, DateRangeFilter
 
 
 class GemDock(QDockWidget, Ui_CatalogueEvents):
@@ -24,5 +25,7 @@ class GemDock(QDockWidget, Ui_CatalogueEvents):
 
     def add_range_sliders(self):
         pass
-        #self.ui.magLayout.addWidget()
-        #self.ui.timeLayout.addWidget()
+        #self.mag_filter = DoubleRangeFilter()
+        #self.time_filter = DateRangeFilter()
+        #self.magLayout.addWidget(self.mag_filter)
+        #self.dateLayout.addWidget(self.time_filter)
