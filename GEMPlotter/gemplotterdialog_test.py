@@ -18,16 +18,18 @@ class GEMPlotterTestCase(unittest.TestCase):
     def tearDown(self):
         self.app.closeAllWindows()
 
-    def test_damage_states(self):
+    def test_taxonomies(self):
         combo = self.dialog.ui.taxonomyCombo
         items = map(combo.itemText, range(combo.count()))
         self.assertEqual(['Taxonomy', 'RC/DMRF-D/LR', 'RC/DMRF-D/HR'], items)
         self.assertTrue(combo.isEnabled())
 
-    def test2(self):
+    def test_plot(self):
+        self.dialog.ui.saveButton.setEnabled(False)
         c = self.dialog.ui.taxonomyCombo
         c.currentIndexChanged.connect(self.dialog.plot_ff)
         c.setCurrentIndex(c.findText('RC/DMRF-D/LR'))
+        self.assertTrue(self.dialog.ui.saveButton.isEnabled())
         c.currentIndexChanged.disconnect()
 
 if __name__ == '__main__':

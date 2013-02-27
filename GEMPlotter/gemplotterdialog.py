@@ -72,6 +72,8 @@ class GEMPlotterDialog(QtGui.QDialog):
             self, 'Select Fragility Model file',
             QtCore.QDir.homePath(),
             'Model files (*.xml)'))
+        # TODO: what to do if modelfile is empty?
+        # what to do if the file is incorrect?
         self._fillCombo()
         self.ui.taxonomyCombo.currentIndexChanged.connect(self.plot_ff)
 
