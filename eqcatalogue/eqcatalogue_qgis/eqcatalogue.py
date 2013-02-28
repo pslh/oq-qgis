@@ -45,6 +45,7 @@ class EqCatalogue:
         # initialize locale
         localePath = ""
         locale = QSettings().value("locale/userLocale").toString()[0:2]
+        self.dockIsVisible = True
 
         if QFileInfo(self.plugin_dir).exists():
             localePath = self.plugin_dir + "/i18n/eqcatalogue_" + locale + ".qm"
@@ -61,24 +62,54 @@ class EqCatalogue:
 
     def initGui(self):
         # Create action that will start plugin configuration
-        self.action = QAction(
+        self.show_catalogue = QAction(
             QIcon(":/plugins/eqcatalogue/icon.png"),
-            u"Eqcatalogue", self.iface.mainWindow())
+            u"Eqcatalogue Toggle Dock", self.iface.mainWindow())
+        self.show_catalogue.setCheckable(True)
+        self.show_catalogue.setChecked(self.dockIsVisible)
+
+        self.import_isf = QAction(
+            QIcon(":/plugins/eqcatalogue/icon.png"),
+            u"Import ISF file in db", self.iface.mainWindow())
+
+        self.import_iaspei = QAction(
+            QIcon(":/plugins/eqcatalogue/icon.png"),
+            u"Import IASPEI file in db", self.iface.mainWindow())
+
         # connect the action to the run method
-        QObject.connect(self.action, SIGNAL("triggered()"), self.run)
+        QObject.connect(self.show_catalogue, SIGNAL("triggered()"), self.toggle_dock)
+        QObject.connect(self.import_isf, SIGNAL("triggered()"),
+            lambda: self.import_catalogue("Isf"))
+        QObject.connect(self.import_iaspei, SIGNAL("triggered()"),
+            lambda: self.import_catalogue("Iaspei"))
 
         # Add toolbar button and menu item
-        self.iface.addToolBarIcon(self.action)
-        self.iface.addPluginToMenu(u"&eqcatalogue", self.action)
+        self.iface.addToolBarIcon(self.show_catalogue)
+        self.iface.addPluginToMenu(u"&eqcatalogue", self.show_catalogue)
+        self.iface.addPluginToMenu(u"&eqcatalogue", self.import_isf)
+        self.iface.addPluginToMenu(u"&eqcatalogue", self.import_iaspei)
 
         self.iface.addDockWidget(Qt.RightDockWidgetArea, self.dock)
 
     def unload(self):
         # Remove the plugin menu item and icon
-        self.iface.removePluginMenu(u"&eqcatalogue", self.action)
-        self.iface.removeToolBarIcon(self.action)
+        self.iface.removePluginMenu(u"&eqcatalogue", self.show_catalogue)
+        self.iface.removePluginMenu(u"&eqcatalogue", self.import_isf)
+        self.iface.removePluginMenu(u"&eqcatalogue", self.import_iaspei)
 
-    # run method that performs all the real work
-    def run(self):
-        # show the dialog
-        self.dock.setVisibile(True)
+        self.iface.removeToolBarIcon(self.show_catalogue)
+
+    def toggle_dock(self):
+        # show the dock
+        self.dockIsVisible = not self.dockIsVisible
+        self.dock.setVisible(self.dockIsVisible)
+
+    def import_catalogue(self, format):
+        if format == "Isf":
+            file_type = 'Isf file (*.txt)'
+        elif format == "Iaspei":
+            file_type = 'Iaspei file (*.csv)'
+
+        self.file_path = unicode(QFileDialog.getOpenFileName(
+            self.iface.mainWindow(), 'Select Catalogue file', QDir.homePath(),
+            file_type))

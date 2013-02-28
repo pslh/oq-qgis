@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'eqcatalogue_qgis/catalogue_events.ui'
 #
-# Created: Wed Feb 27 17:24:02 2013
+# Created: Thu Feb 28 10:45:50 2013
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@ except AttributeError:
 class Ui_CatalogueEvents(object):
     def setupUi(self, CatalogueEvents):
         CatalogueEvents.setObjectName(_fromUtf8("CatalogueEvents"))
-        CatalogueEvents.resize(410, 572)
+        CatalogueEvents.resize(329, 544)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/plugins/inasafe/icon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         CatalogueEvents.setWindowIcon(icon)
@@ -32,13 +32,9 @@ class Ui_CatalogueEvents(object):
         self.gridLayout_3.setContentsMargins(0, 6, 0, 0)
         self.gridLayout_3.setVerticalSpacing(1)
         self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
-        self.cboHazard = QtGui.QComboBox(self.grpQuestion)
-        self.cboHazard.setInsertPolicy(QtGui.QComboBox.InsertAlphabetically)
-        self.cboHazard.setObjectName(_fromUtf8("cboHazard"))
-        self.gridLayout_3.addWidget(self.cboHazard, 2, 0, 1, 2)
-        self.mag_range = DoubleRangeFilter(self.grpQuestion)
-        self.mag_range.setObjectName(_fromUtf8("mag_range"))
-        self.gridLayout_3.addWidget(self.mag_range, 7, 0, 1, 1)
+        self.date_range = DateRangeFilter(self.grpQuestion)
+        self.date_range.setObjectName(_fromUtf8("date_range"))
+        self.gridLayout_3.addWidget(self.date_range, 9, 0, 1, 1)
         self.label_8 = QtGui.QLabel(self.grpQuestion)
         self.label_8.setMargin(10)
         self.label_8.setObjectName(_fromUtf8("label_8"))
@@ -47,13 +43,14 @@ class Ui_CatalogueEvents(object):
         self.cboExposure.setInsertPolicy(QtGui.QComboBox.InsertAlphabetically)
         self.cboExposure.setObjectName(_fromUtf8("cboExposure"))
         self.gridLayout_3.addWidget(self.cboExposure, 5, 0, 1, 2)
+        self.cboHazard = QtGui.QComboBox(self.grpQuestion)
+        self.cboHazard.setInsertPolicy(QtGui.QComboBox.InsertAlphabetically)
+        self.cboHazard.setObjectName(_fromUtf8("cboHazard"))
+        self.gridLayout_3.addWidget(self.cboHazard, 2, 0, 1, 2)
         self.label = QtGui.QLabel(self.grpQuestion)
         self.label.setMargin(10)
         self.label.setObjectName(_fromUtf8("label"))
         self.gridLayout_3.addWidget(self.label, 1, 0, 1, 1)
-        self.date_range = DateRangeFilter(self.grpQuestion)
-        self.date_range.setObjectName(_fromUtf8("date_range"))
-        self.gridLayout_3.addWidget(self.date_range, 9, 0, 1, 1)
         self.label_7 = QtGui.QLabel(self.grpQuestion)
         self.label_7.setMargin(10)
         self.label_7.setObjectName(_fromUtf8("label_7"))
@@ -62,6 +59,9 @@ class Ui_CatalogueEvents(object):
         self.label_2.setMargin(10)
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.gridLayout_3.addWidget(self.label_2, 8, 0, 1, 1)
+        self.mag_range = DoubleRangeFilter(self.grpQuestion)
+        self.mag_range.setObjectName(_fromUtf8("mag_range"))
+        self.gridLayout_3.addWidget(self.mag_range, 7, 0, 1, 1)
         self.gridLayout.addWidget(self.grpQuestion, 0, 0, 1, 1)
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))

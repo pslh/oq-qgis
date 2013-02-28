@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>410</width>
-    <height>572</height>
+    <width>329</width>
+    <height>544</height>
    </rect>
   </property>
   <property name="windowIcon">
@@ -52,15 +52,8 @@
        <property name="verticalSpacing">
         <number>1</number>
        </property>
-       <item row="2" column="0" colspan="2">
-        <widget class="QComboBox" name="cboHazard">
-         <property name="insertPolicy">
-          <enum>QComboBox::InsertAlphabetically</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="0">
-        <widget class="DoubleRangeFilter" name="mag_range" native="true"/>
+       <item row="9" column="0">
+        <widget class="DateRangeFilter" name="date_range" native="true"/>
        </item>
        <item row="6" column="0">
         <widget class="QLabel" name="label_8">
@@ -79,6 +72,13 @@
          </property>
         </widget>
        </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="QComboBox" name="cboHazard">
+         <property name="insertPolicy">
+          <enum>QComboBox::InsertAlphabetically</enum>
+         </property>
+        </widget>
+       </item>
        <item row="1" column="0">
         <widget class="QLabel" name="label">
          <property name="text">
@@ -88,9 +88,6 @@
           <number>10</number>
          </property>
         </widget>
-       </item>
-       <item row="9" column="0">
-        <widget class="DateRangeFilter" name="date_range" native="true"/>
        </item>
        <item row="3" column="0">
         <widget class="QLabel" name="label_7">
@@ -114,6 +111,9 @@
           <number>10</number>
          </property>
         </widget>
+       </item>
+       <item row="7" column="0">
+        <widget class="DoubleRangeFilter" name="mag_range" native="true"/>
        </item>
       </layout>
      </widget>
