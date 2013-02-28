@@ -35,11 +35,8 @@ import resources_rc
 # Import the code for the dialog
 from dock import GemDock
 
-import sys
-print sys.path
-
 from eqcatalogue import CatalogueDatabase
-from eqcatalogue.importers import V1, Iaspei
+from eqcatalogue.importers import V1, Iaspei, store_events
 
 FMT_MAP = {'isf': V1, 'iaspei': Iaspei}
 
@@ -129,4 +126,4 @@ class EqCatalogue:
 
         self.cat_db = CatalogueDatabase(filename=self.save_file_path)
         with open(self.import_file_path, 'rb') as cat_file:
-            store_events(FMT_MAP[file_type], self.cat_db, cat_file)
+            store_events(FMT_MAP[format], cat_file, self.cat_db)
