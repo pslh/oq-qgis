@@ -25,6 +25,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with OpenQuake. If not, see <http://www.gnu.org/licenses/>.
 """
+
 # Import the PyQt and QGIS libraries
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -33,6 +34,14 @@ from qgis.core import *
 import resources_rc
 # Import the code for the dialog
 from dock import GemDock
+
+import sys
+print sys.path
+
+from eqcatalogue import CatalogueDatabase
+from eqcatalogue.importers import V1, Iaspei
+
+FMT_MAP = {'isf': V1, 'iaspei': Iaspei}
 
 
 class EqCatalogue:
@@ -79,9 +88,9 @@ class EqCatalogue:
         # connect the action to the run method
         QObject.connect(self.show_catalogue, SIGNAL("triggered()"), self.toggle_dock)
         QObject.connect(self.import_isf, SIGNAL("triggered()"),
-            lambda: self.import_catalogue("Isf"))
+            lambda: self.import_catalogue("isf"))
         QObject.connect(self.import_iaspei, SIGNAL("triggered()"),
-            lambda: self.import_catalogue("Iaspei"))
+            lambda: self.import_catalogue("iaspei"))
 
         # Add toolbar button and menu item
         self.iface.addToolBarIcon(self.show_catalogue)
@@ -105,11 +114,19 @@ class EqCatalogue:
         self.dock.setVisible(self.dockIsVisible)
 
     def import_catalogue(self, format):
-        if format == "Isf":
+        if format == "isf":
             file_type = 'Isf file (*.txt)'
-        elif format == "Iaspei":
+        elif format == "iaspei":
             file_type = 'Iaspei file (*.csv)'
 
-        self.file_path = unicode(QFileDialog.getOpenFileName(
+        self.import_file_path = unicode(QFileDialog.getOpenFileName(
             self.iface.mainWindow(), 'Select Catalogue file', QDir.homePath(),
             file_type))
+
+        self.save_file_path = unicode(QFileDialog.getSaveFileName(
+            self.iface.mainWindow(), 'Save Catalogue file into', QDir.homePath(),
+            file_type))
+
+        self.cat_db = CatalogueDatabase(filename=self.save_file_path)
+        with open(self.import_file_path, 'rb') as cat_file:
+            store_events(FMT_MAP[file_type], self.cat_db, cat_file)
