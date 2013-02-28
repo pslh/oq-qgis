@@ -35,7 +35,8 @@ class GEMPlotter:
         # Save reference to the QGIS interface
         self.iface = iface
         # initialize plugin directory
-        self.plugin_dir = QFileInfo(QgsApplication.qgisUserDbFilePath()).path() + "/python/plugins/gemplotter"
+        self.plugin_dir = QFileInfo(QgsApplication.qgisUserDbFilePath()
+                                    ).path() + "/python/plugins/gemplotter"
         # initialize locale
         localePath = ""
         locale = QSettings().value("locale/userLocale").toString()[0:2]
