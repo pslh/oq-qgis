@@ -102,11 +102,11 @@ class EqCatalogue:
         QObject.connect(self.import_iaspei_action, SIGNAL("triggered()"),
                         lambda: self.import_catalogue("iaspei"))
 
-        QObject.connect(self.show_pippo1_action, SIGNAL("triggered()"),
-                        lambda: self.show_pippo1())
+        QObject.connect(self.show_pippo1_action, SIGNAL("triggered()"), self.show_pippo1)
 
-        QObject.connect(self.show_pippo2_action, SIGNAL("triggered()"),
-                        lambda: self.show_pippo2())
+        QObject.connect(self.show_pippo2_action, SIGNAL("triggered()"), self.show_pippo2)
+
+	QObject.connect(self.dock.filterButton, SIGNAL("clicked()"), self.filter)
 
         # Add toolbar button and menu item
         self.iface.addToolBarIcon(self.show_catalogue_action)
@@ -117,6 +117,15 @@ class EqCatalogue:
         self.iface.addPluginToMenu(u"&eqcatalogue", self.show_pippo2_action)
 
         self.iface.addDockWidget(Qt.RightDockWidgetArea, self.dock)
+
+	self.populate_agencies()
+
+    def populate_agencies(self):
+	dbfile = '/home/michele/pippo.db'
+        db = CatalogueDatabase(filename=dbfile)
+        agencies = [str(a) for a in db.get_agencies()]
+	self.dock.agenciesCombo.addItems(agencies)	
+
 
     def unload(self):
         # Remove the plugin menu item and icon
@@ -134,16 +143,16 @@ class EqCatalogue:
         self.dock.setVisible(self.dockIsVisible)
 
     ## this is an example of using the raw spatialite layer
-    def show_pippo1(self):
+    def show_pippo1(self, agencies=None):
         dbfile = '/home/michele/pippo.db'
         db = CatalogueDatabase(filename=dbfile)
-        agencies = db.get_agencies()
-        one_agency = agencies.pop()  # example PRA
-        data = filtering.WithAgencies([one_agency])
-        uri = QgsDataSourceURI()
-        uri.setDatabase(dbfile)
-        schema = ''
-        table = 'catalogue_origin'
+	if agencies is None:
+		agencies = db.get_agencies()
+	data = filtering.WithAgencies(agencies)
+	uri = QgsDataSourceURI()
+	uri.setDatabase(dbfile)
+	schema = ''
+	table = 'catalogue_origin'
         geom_column = 'position'
         uri.setDataSource(schema, table, geom_column)
 
@@ -188,7 +197,8 @@ class EqCatalogue:
         provider.addFeatures(features)
         vlayer.commitChanges()
         vlayer.updateExtents()
-        vlayer.triggerRepaint()
+	self.iface.mapCanvas().setExtent(vlayer.extent())		
+	vlayer.triggerRepaint()
 
     def import_catalogue(self, format):
         if format == "isf":
@@ -208,3 +218,8 @@ class EqCatalogue:
         self.cat_db = CatalogueDatabase(filename=self.save_file_path)
         with open(self.import_file_path, 'rb') as cat_file:
             store_events(FMT_MAP[format], cat_file, self.cat_db)
+
+    def filter(self):
+	selectedItems = self.dock.agenciesCombo.checkedItems()
+	print selectedItems
+        self.show_pippo1(map(str, selectedItems))

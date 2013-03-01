@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'eqcatalogue_qgis/catalogue_events.ui'
 #
-# Created: Thu Feb 28 10:45:50 2013
+# Created: Fri Mar  1 15:00:59 2013
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,6 +26,11 @@ class Ui_CatalogueEvents(object):
         self.gridLayout = QtGui.QGridLayout(self.dockWidgetContents)
         self.gridLayout.setContentsMargins(3, 0, 3, 3)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
+        self.horizontalLayout = QtGui.QHBoxLayout()
+        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
+        self.gridLayout.addLayout(self.horizontalLayout, 4, 0, 1, 1)
+        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.gridLayout.addItem(spacerItem, 6, 0, 1, 1)
         self.grpQuestion = QtGui.QGroupBox(self.dockWidgetContents)
         self.grpQuestion.setObjectName(_fromUtf8("grpQuestion"))
         self.gridLayout_3 = QtGui.QGridLayout(self.grpQuestion)
@@ -39,14 +44,14 @@ class Ui_CatalogueEvents(object):
         self.label_8.setMargin(10)
         self.label_8.setObjectName(_fromUtf8("label_8"))
         self.gridLayout_3.addWidget(self.label_8, 6, 0, 1, 1)
-        self.cboExposure = QtGui.QComboBox(self.grpQuestion)
-        self.cboExposure.setInsertPolicy(QtGui.QComboBox.InsertAlphabetically)
-        self.cboExposure.setObjectName(_fromUtf8("cboExposure"))
-        self.gridLayout_3.addWidget(self.cboExposure, 5, 0, 1, 2)
-        self.cboHazard = QtGui.QComboBox(self.grpQuestion)
-        self.cboHazard.setInsertPolicy(QtGui.QComboBox.InsertAlphabetically)
-        self.cboHazard.setObjectName(_fromUtf8("cboHazard"))
-        self.gridLayout_3.addWidget(self.cboHazard, 2, 0, 1, 2)
+        self.mscalesCombo = MultiCheckComboBox(self.grpQuestion)
+        self.mscalesCombo.setInsertPolicy(QtGui.QComboBox.InsertAlphabetically)
+        self.mscalesCombo.setObjectName(_fromUtf8("mscalesCombo"))
+        self.gridLayout_3.addWidget(self.mscalesCombo, 5, 0, 1, 2)
+        self.agenciesCombo = MultiCheckComboBox(self.grpQuestion)
+        self.agenciesCombo.setInsertPolicy(QtGui.QComboBox.InsertAlphabetically)
+        self.agenciesCombo.setObjectName(_fromUtf8("agenciesCombo"))
+        self.gridLayout_3.addWidget(self.agenciesCombo, 2, 0, 1, 2)
         self.label = QtGui.QLabel(self.grpQuestion)
         self.label.setMargin(10)
         self.label.setObjectName(_fromUtf8("label"))
@@ -63,13 +68,11 @@ class Ui_CatalogueEvents(object):
         self.mag_range.setObjectName(_fromUtf8("mag_range"))
         self.gridLayout_3.addWidget(self.mag_range, 7, 0, 1, 1)
         self.gridLayout.addWidget(self.grpQuestion, 0, 0, 1, 1)
-        self.horizontalLayout = QtGui.QHBoxLayout()
-        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        self.gridLayout.addLayout(self.horizontalLayout, 4, 0, 1, 1)
-        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.gridLayout.addItem(spacerItem, 5, 0, 1, 1)
+        self.filterButton = QtGui.QPushButton(self.dockWidgetContents)
+        self.filterButton.setObjectName(_fromUtf8("filterButton"))
+        self.gridLayout.addWidget(self.filterButton, 5, 0, 1, 1)
         CatalogueEvents.setWidget(self.dockWidgetContents)
-        self.label_7.setBuddy(self.cboExposure)
+        self.label_7.setBuddy(self.mscalesCombo)
 
         self.retranslateUi(CatalogueEvents)
         QtCore.QMetaObject.connectSlotsByName(CatalogueEvents)
@@ -81,6 +84,8 @@ class Ui_CatalogueEvents(object):
         self.label.setText(QtGui.QApplication.translate("CatalogueEvents", "Select one or more agencies:", None, QtGui.QApplication.UnicodeUTF8))
         self.label_7.setText(QtGui.QApplication.translate("CatalogueEvents", "Select one or more magnitude scales:", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("CatalogueEvents", "Define date range:", None, QtGui.QApplication.UnicodeUTF8))
+        self.filterButton.setText(QtGui.QApplication.translate("CatalogueEvents", "Filter", None, QtGui.QApplication.UnicodeUTF8))
 
+from MultiCheckComboBox import MultiCheckComboBox
 from rangeFilter import DoubleRangeFilter, DateRangeFilter
 import resources_rc
