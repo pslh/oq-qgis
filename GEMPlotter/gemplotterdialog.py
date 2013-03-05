@@ -40,7 +40,7 @@ class GEMPlotterDialog(QtGui.QDialog):
         self.ui = Ui_GEMPlotter()
         self.ui.setupUi(self)
         self.modelfile = None
-
+        self.ff = {}  # fragility functions dictionary
         self.fig = Figure()
         self.axes = self.fig.add_subplot(111)
         self.axes.grid(True)
@@ -61,7 +61,7 @@ class GEMPlotterDialog(QtGui.QDialog):
 
     @QtCore.pyqtSlot(int)
     def plot_ff(self, taxonomy_idx):
-        if not taxonomy_idx:
+        if taxonomy_idx <= 0:
             return
         self.axes.clear()
         taxonomy = str(self.ui.taxonomyCombo.itemText(taxonomy_idx))
@@ -86,5 +86,6 @@ class GEMPlotterDialog(QtGui.QDialog):
         p = iter(FragilityModelParser(self.modelfile))
         kind, self.iml, self.states = next(p)
         self.ff = dict((taxonomy, y) for taxonomy, y, no_damage_limit in p)
-        self.ui.taxonomyCombo.addItems(self.ff.keys())
+        self.ui.taxonomyCombo.clear()
+        self.ui.taxonomyCombo.addItems(['Taxonomy'] + self.ff.keys())
         self.ui.taxonomyCombo.setEnabled(True)
